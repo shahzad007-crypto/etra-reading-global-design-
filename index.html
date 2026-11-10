@@ -1,0 +1,673 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Unit 6 Lesson B: Designing for a Global Audience - Assessment</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        .correct-mark { color: #10b981; font-weight: bold; margin-left: 6px; font-size: 1.15rem; }
+        .incorrect-mark { color: #ef4444; font-weight: bold; margin-left: 6px; font-size: 1.15rem; }
+        .feedback { 
+            font-size: 0.82rem; 
+            color: #475569; 
+            font-style: italic; 
+            display: block; 
+            margin-top: 4px;
+            padding: 4px 8px;
+            background-color: #f8fafc;
+            border-left: 3px solid #3b82f6;
+            border-radius: 2px;
+        }
+        .hidden-el { display: none !important; }
+        input[type="text"]:disabled, select:disabled { 
+            background-color: #f1f5f9 !important; 
+            color: #334155 !important; 
+            cursor: not-allowed; 
+            border-color: #cbd5e1 !important; 
+        }
+        .unanswered { border: 2px solid #ef4444 !important; background-color: #fff1f2 !important; }
+        
+        .score-circle-banner {
+            width: 130px;
+            height: 130px;
+            border-radius: 50%;
+            border: 8px solid #f59e0b;
+            background: #ffffff;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.3);
+            flex-shrink: 0;
+        }
+
+        .word-bank-tag {
+            background: #ffffff;
+            border: 1px solid #cbd5e1;
+            padding: 3px 10px;
+            border-radius: 6px;
+            font-family: monospace;
+            font-weight: 700;
+            color: #1e293b;
+            box-shadow: 0 1px 2px 0 rgba(0,0,0,0.05);
+        }
+
+        @media print {
+            .no-print { display: none !important; }
+            body { background: white; padding: 0; }
+            .max-w-4xl { max-width: 100% !important; border: none; box-shadow: none; }
+            #topScoreBanner { display: flex !important; }
+        }
+    </style>
+</head>
+<body class="bg-slate-100 min-h-screen p-4 md:p-8 font-sans">
+
+    <div class="max-w-4xl mx-auto bg-white rounded-2xl shadow-xl overflow-hidden border border-slate-200" id="containerCard">
+        
+        <!-- Top Sticky/Prominent Score Banner (Revealed on Submission) -->
+        <div id="topScoreBanner" style="display: none;" class="bg-gradient-to-r from-slate-900 via-blue-950 to-slate-900 text-white p-6 border-b-4 border-amber-400 flex flex-col md:flex-row items-center justify-between gap-6 shadow-2xl">
+            <div class="text-center md:text-left">
+                <span class="inline-block px-3 py-1 bg-amber-400 text-slate-950 font-black text-xs uppercase tracking-widest rounded-full mb-2">
+                    Worksheet Evaluated & Locked
+                </span>
+                <h2 class="text-2xl md:text-3xl font-black tracking-tight" id="topScoreTitle">Assessment Completed</h2>
+                <p class="text-slate-300 text-sm mt-1" id="topScoreDetail">Your score has been recorded. Submission is complete and locked.</p>
+            </div>
+            
+            <div class="score-circle-banner">
+                <span class="text-[10px] font-black uppercase tracking-widest text-slate-500">Total Score</span>
+                <span id="topScoreText" class="text-3xl font-black text-slate-900 leading-none my-1">0/25</span>
+                <span id="topGradeText" class="text-xs font-bold text-blue-700 bg-blue-50 px-2 py-0.5 rounded-full">0%</span>
+            </div>
+        </div>
+
+        <!-- Header Section -->
+        <header class="bg-slate-800 text-white p-6">
+            <div class="flex justify-between items-center mb-3">
+                <h1 class="text-xl md:text-2xl font-bold uppercase tracking-tight">Preparatory Studies Center</h1>
+                <span class="bg-slate-700 px-3 py-1 rounded text-xs font-semibold">GE3 - Unit 6 Lesson B</span>
+            </div>
+            <h2 class="text-lg opacity-90 border-b border-slate-600 pb-2 mb-4">Reading: Designing for a Global Audience</h2>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm bg-slate-900/40 p-4 rounded-xl">
+                <div class="space-y-1">
+                    <label class="block text-slate-400 text-[10px] uppercase font-bold tracking-wider">Student Name</label>
+                    <input type="text" id="studentName" placeholder="Full Name" class="w-full p-2 rounded text-slate-900 outline-none focus:ring-2 focus:ring-blue-400 transition-all font-medium">
+                </div>
+                <div class="space-y-1">
+                    <label class="block text-slate-400 text-[10px] uppercase font-bold tracking-wider">Group / Date</label>
+                    <input type="text" id="studentGroup" placeholder="e.g. L4-A / 10 Nov 2026" class="w-full p-2 rounded text-slate-900 outline-none focus:ring-2 focus:ring-blue-400 transition-all font-medium">
+                </div>
+                <div class="md:col-span-2 mt-2 pt-2 border-t border-slate-700 flex justify-between items-center text-xs md:text-sm">
+                    <span class="text-slate-300 font-medium">Learning Objectives: L4 R4 1, 2, 3, 7, 8, 9 & 10</span>
+                    <div id="liveScore" class="font-bold text-yellow-400 text-base md:text-lg tracking-wider">SCORE: -- / 25</div>
+                </div>
+            </div>
+        </header>
+
+        <!-- Reading Passage Reference Drawer -->
+        <div class="p-6 bg-slate-50 border-b border-slate-200">
+            <details class="group cursor-pointer">
+                <summary class="flex justify-between items-center font-bold text-slate-800 text-sm list-none select-none">
+                    <span class="flex items-center gap-2">
+                        <svg class="w-5 h-5 text-blue-600 transition-transform group-open:rotate-90" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path></svg>
+                        Click to Read Passage: "Designing for a Global Audience" (Paragraphs A – I)
+                    </span>
+                    <span class="text-xs text-blue-600 font-semibold uppercase group-open:hidden">Show Text</span>
+                    <span class="text-xs text-slate-400 font-semibold uppercase hidden group-open:inline">Hide Text</span>
+                </summary>
+                <div class="mt-4 pt-4 border-t border-slate-200 text-sm leading-relaxed text-slate-700 space-y-3 pl-2">
+                    <p><strong>Paragraph A:</strong> When companies expand internationally, they quickly discover that visual advertising is not universal. A marketing campaign that succeeds in one country may fail completely in another. For instance, a friendly hand gesture shown in a billboard advertisement might signal warmth in North America, but the exact same sign can be offensive in parts of West Africa. Therefore, understanding the cultural context is essential before launching any global campaign.</p>
+                    <p><strong>Paragraph B:</strong> Consider the choice of colors in brand marketing. When a team of graphic artists proposed using yellow for a corporate redesign in Malaysia, local advisors strongly cautioned against it. In that region, yellow has royal associations and is traditionally reserved for official ceremonies, whereas in Western markets, it simply signals brightness and optimism.</p>
+                    <p><strong>Paragraph C:</strong> Colors can also carry unintended emotional weight. In many Western nations, black carries a strong connotation of formality or mourning. However, in several East Asian cultures, white—not black—is traditionally associated with funerals and loss. Advertisers who fail to recognize these symbolic differences risk confusing or alienating their intended target audience.</p>
+                    <p><strong>Paragraph D:</strong> Visual layouts and spatial choices vary greatly by region as well. In European print media, square frames and clean, symmetrical grids are widely favored. In contrast, East Asian marketing materials frequently incorporate organic shapes and dense, layered visual elements. Design experts note that these aesthetic preferences often have to do with the structural features of local writing systems.</p>
+                    <p><strong>Paragraph E:</strong> Reading direction presents another critical challenge for global campaigns. Because written Arabic reads from right to left, designers must reverse the sequence of image panels in promotional materials. Failing to adjust this layout can cause consumers to misinterpret the chronological timeline of a product's story.</p>
+                    <p><strong>Paragraph F:</strong> International publications must tailor their visual style to reflect local preferences while maintaining brand identity. Global fashion and technology magazines, for example, produce distinctly different covers for their European, Middle Eastern, and Asian editions. Each regional edition reflects unique aesthetic standards and artistic traditions.</p>
+                    <p><strong>Paragraph G:</strong> Some art directors notice a clear parallelism between traditional regional artwork and modern digital design. In Japan, for example, the clean lines of historical woodblock prints are echoed in minimalist website layouts. Nevertheless, global brands must avoid oversimplifying cultural styles into rigid stereotypes, as modern consumers appreciate subtle and respectful design choices.</p>
+                    <p><strong>Paragraph H:</strong> Modern marketing also shows a heavy reliance on data-driven visual graphics. Advertisers increasingly use charts, graphs, and numerical statistics to demonstrate product performance and build consumer trust. However, research indicates that Western audiences respond more strongly to numerical claims than consumers in collectivist societies, who often prioritize community testimonials.</p>
+                    <p><strong>Paragraph I:</strong> As global creative teams collaborate more closely, cross-cultural design continues to evolve. Renowned creative directors emphasize the positives of this exchange of ideas across borders. By absorbing diverse artistic techniques and respecting local traditions, designers create richer, more meaningful visual experiences for audiences around the world.</p>
+                </div>
+            </details>
+        </div>
+
+        <form id="quizForm" class="p-6 md:p-8 space-y-10" onsubmit="return false;">
+            
+            <!-- SECTION 1: Matching Headings (Q1-4) -->
+            <section>
+                <div class="flex items-center space-x-2 mb-4">
+                    <span class="bg-slate-800 text-white w-8 h-8 rounded-full flex items-center justify-center font-bold">1</span>
+                    <h3 class="text-lg font-bold text-slate-800 uppercase">Section A: Matching Headings</h3>
+                </div>
+                <p class="text-sm text-slate-500 mb-4 italic">Questions 1–4: Look at Paragraphs A, C, D, and E. From headings 1–5, choose the suitable title for each paragraph.</p>
+                
+                <div class="bg-slate-50 p-4 rounded-lg border border-slate-200 mb-6 grid grid-cols-1 md:grid-cols-2 gap-2 text-sm font-medium text-slate-700">
+                    <p><strong>1.</strong> Contrasting color meanings and emotional symbolism</p>
+                    <p><strong>2.</strong> Adapting visual sequences to local reading directions</p>
+                    <p><strong>3.</strong> Cultural context and international marketing failure risks</p>
+                    <p><strong>4.</strong> Regional variations in visual shapes, layout, and writing systems</p>
+                    <p class="md:col-span-2"><strong>5.</strong> The heavy impact of digital software on print publications</p>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div class="flex flex-col space-y-1">
+                        <label class="text-sm font-semibold text-slate-800">1. Paragraph A =</label>
+                        <select name="q1" data-answer="3" data-desc="Heading 3: Cultural context and international marketing failure risks (Para A)" class="border p-2 rounded focus:ring-2 focus:ring-blue-400 outline-none transition-all">
+                            <option value="">-Select-</option>
+                            <option value="1">1</option><option value="2">2</option><option value="3">3</option><option value="4">4</option><option value="5">5</option>
+                        </select>
+                        <div id="feedback-q1"></div>
+                    </div>
+
+                    <div class="flex flex-col space-y-1">
+                        <label class="text-sm font-semibold text-slate-800">2. Paragraph C =</label>
+                        <select name="q2" data-answer="1" data-desc="Heading 1: Contrasting color meanings and emotional symbolism (Para C)" class="border p-2 rounded focus:ring-2 focus:ring-blue-400 outline-none transition-all">
+                            <option value="">-Select-</option>
+                            <option value="1">1</option><option value="2">2</option><option value="3">3</option><option value="4">4</option><option value="5">5</option>
+                        </select>
+                        <div id="feedback-q2"></div>
+                    </div>
+
+                    <div class="flex flex-col space-y-1">
+                        <label class="text-sm font-semibold text-slate-800">3. Paragraph D =</label>
+                        <select name="q3" data-answer="4" data-desc="Heading 4: Regional variations in visual shapes, layout, and writing systems (Para D)" class="border p-2 rounded focus:ring-2 focus:ring-blue-400 outline-none transition-all">
+                            <option value="">-Select-</option>
+                            <option value="1">1</option><option value="2">2</option><option value="3">3</option><option value="4">4</option><option value="5">5</option>
+                        </select>
+                        <div id="feedback-q3"></div>
+                    </div>
+
+                    <div class="flex flex-col space-y-1">
+                        <label class="text-sm font-semibold text-slate-800">4. Paragraph E =</label>
+                        <select name="q4" data-answer="2" data-desc="Heading 2: Adapting visual sequences to local reading directions (Para E)" class="border p-2 rounded focus:ring-2 focus:ring-blue-400 outline-none transition-all">
+                            <option value="">-Select-</option>
+                            <option value="1">1</option><option value="2">2</option><option value="3">3</option><option value="4">4</option><option value="5">5</option>
+                        </select>
+                        <div id="feedback-q4"></div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- SECTION 2: True / False / Not Given (Q5-12) -->
+            <section>
+                <div class="flex items-center space-x-2 mb-4">
+                    <span class="bg-slate-800 text-white w-8 h-8 rounded-full flex items-center justify-center font-bold">2</span>
+                    <h3 class="text-lg font-bold text-slate-800 uppercase">Section B: TRUE / FALSE / NOT GIVEN</h3>
+                </div>
+                <p class="text-sm text-slate-500 mb-4 italic">Questions 5–12: Do the following statements agree with the reading text? Select TRUE, FALSE, or NOT GIVEN.</p>
+
+                <div class="space-y-4">
+                    <div class="flex flex-col md:flex-row md:items-center justify-between border-b pb-3 gap-2">
+                        <span class="text-slate-700 text-sm flex-grow pr-4"><strong>5.</strong> A hand gesture that indicates warmth in North America is considered offensive everywhere in Africa.</span>
+                        <div class="flex flex-col items-end">
+                            <select name="q5" data-answer="F" data-desc="FALSE (Para A: Specifies 'parts of West Africa', not everywhere in Africa)" class="border p-2 rounded w-36 focus:ring-2 focus:ring-blue-400 transition-all font-semibold">
+                                <option value="">-Select-</option>
+                                <option value="T">TRUE (T)</option>
+                                <option value="F">FALSE (F)</option>
+                                <option value="NG">NOT GIVEN (NG)</option>
+                            </select>
+                            <div id="feedback-q5" class="w-full"></div>
+                        </div>
+                    </div>
+
+                    <div class="flex flex-col md:flex-row md:items-center justify-between border-b pb-3 gap-2">
+                        <span class="text-slate-700 text-sm flex-grow pr-4"><strong>6.</strong> Graphic artists were advised against using yellow for a corporate redesign in Malaysia.</span>
+                        <div class="flex flex-col items-end">
+                            <select name="q6" data-answer="T" data-desc="TRUE (Para B: Local advisors strongly cautioned against using yellow)" class="border p-2 rounded w-36 focus:ring-2 focus:ring-blue-400 transition-all font-semibold">
+                                <option value="">-Select-</option>
+                                <option value="T">TRUE (T)</option>
+                                <option value="F">FALSE (F)</option>
+                                <option value="NG">NOT GIVEN (NG)</option>
+                            </select>
+                            <div id="feedback-q6" class="w-full"></div>
+                        </div>
+                    </div>
+
+                    <div class="flex flex-col md:flex-row md:items-center justify-between border-b pb-3 gap-2">
+                        <span class="text-slate-700 text-sm flex-grow pr-4"><strong>7.</strong> White is traditionally associated with mourning and funerals in several East Asian cultures.</span>
+                        <div class="flex flex-col items-end">
+                            <select name="q7" data-answer="T" data-desc="TRUE (Para C: White is traditionally associated with funerals and loss)" class="border p-2 rounded w-36 focus:ring-2 focus:ring-blue-400 transition-all font-semibold">
+                                <option value="">-Select-</option>
+                                <option value="T">TRUE (T)</option>
+                                <option value="F">FALSE (F)</option>
+                                <option value="NG">NOT GIVEN (NG)</option>
+                            </select>
+                            <div id="feedback-q7" class="w-full"></div>
+                        </div>
+                    </div>
+
+                    <div class="flex flex-col md:flex-row md:items-center justify-between border-b pb-3 gap-2">
+                        <span class="text-slate-700 text-sm flex-grow pr-4"><strong>8.</strong> European print media favors organic shapes and dense, layered visual elements over symmetrical grids.</span>
+                        <div class="flex flex-col items-end">
+                            <select name="q8" data-answer="F" data-desc="FALSE (Para D: Europe favors symmetrical grids; East Asian materials favor organic, dense shapes)" class="border p-2 rounded w-36 focus:ring-2 focus:ring-blue-400 transition-all font-semibold">
+                                <option value="">-Select-</option>
+                                <option value="T">TRUE (T)</option>
+                                <option value="F">FALSE (F)</option>
+                                <option value="NG">NOT GIVEN (NG)</option>
+                            </select>
+                            <div id="feedback-q8" class="w-full"></div>
+                        </div>
+                    </div>
+
+                    <div class="flex flex-col md:flex-row md:items-center justify-between border-b pb-3 gap-2">
+                        <span class="text-slate-700 text-sm flex-grow pr-4"><strong>9.</strong> Designers in Arabic-speaking countries have won awards for reversing image panel sequences.</span>
+                        <div class="flex flex-col items-end">
+                            <select name="q9" data-answer="NG" data-desc="NOT GIVEN (Para E: Reversing panels is mentioned, but awards won are never mentioned)" class="border p-2 rounded w-36 focus:ring-2 focus:ring-blue-400 transition-all font-semibold">
+                                <option value="">-Select-</option>
+                                <option value="T">TRUE (T)</option>
+                                <option value="F">FALSE (F)</option>
+                                <option value="NG">NOT GIVEN (NG)</option>
+                            </select>
+                            <div id="feedback-q9" class="w-full"></div>
+                        </div>
+                    </div>
+
+                    <div class="flex flex-col md:flex-row md:items-center justify-between border-b pb-3 gap-2">
+                        <span class="text-slate-700 text-sm flex-grow pr-4"><strong>10.</strong> Global magazines produce identical covers for their European, Middle Eastern, and Asian editions to maintain brand identity.</span>
+                        <div class="flex flex-col items-end">
+                            <select name="q10" data-answer="F" data-desc="FALSE (Para F: They produce 'distinctly different covers' for regional editions)" class="border p-2 rounded w-36 focus:ring-2 focus:ring-blue-400 transition-all font-semibold">
+                                <option value="">-Select-</option>
+                                <option value="T">TRUE (T)</option>
+                                <option value="F">FALSE (F)</option>
+                                <option value="NG">NOT GIVEN (NG)</option>
+                            </select>
+                            <div id="feedback-q10" class="w-full"></div>
+                        </div>
+                    </div>
+
+                    <div class="flex flex-col md:flex-row md:items-center justify-between border-b pb-3 gap-2">
+                        <span class="text-slate-700 text-sm flex-grow pr-4"><strong>11.</strong> Minimalist Japanese website layouts reflect the clean lines of traditional woodblock prints.</span>
+                        <div class="flex flex-col items-end">
+                            <select name="q11" data-answer="T" data-desc="TRUE (Para G: The clean lines of historical prints are echoed in minimalist layouts)" class="border p-2 rounded w-36 focus:ring-2 focus:ring-blue-400 transition-all font-semibold">
+                                <option value="">-Select-</option>
+                                <option value="T">TRUE (T)</option>
+                                <option value="F">FALSE (F)</option>
+                                <option value="NG">NOT GIVEN (NG)</option>
+                            </select>
+                            <div id="feedback-q11" class="w-full"></div>
+                        </div>
+                    </div>
+
+                    <div class="flex flex-col md:flex-row md:items-center justify-between border-b pb-3 gap-2">
+                        <span class="text-slate-700 text-sm flex-grow pr-4"><strong>12.</strong> Collectivist societies tend to value numerical statistics more than community testimonials.</span>
+                        <div class="flex flex-col items-end">
+                            <select name="q12" data-answer="F" data-desc="FALSE (Para H: Collectivist societies prioritize testimonials over numerical statistics)" class="border p-2 rounded w-36 focus:ring-2 focus:ring-blue-400 transition-all font-semibold">
+                                <option value="">-Select-</option>
+                                <option value="T">TRUE (T)</option>
+                                <option value="F">FALSE (F)</option>
+                                <option value="NG">NOT GIVEN (NG)</option>
+                            </select>
+                            <div id="feedback-q12" class="w-full"></div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- SECTION 3: Summary Completion Dropdowns (Q13-17) -->
+            <section>
+                <div class="flex items-center space-x-2 mb-4">
+                    <span class="bg-slate-800 text-white w-8 h-8 rounded-full flex items-center justify-center font-bold">3</span>
+                    <h3 class="text-lg font-bold text-slate-800 uppercase">Section C: Summary Completion</h3>
+                </div>
+                <p class="text-sm text-slate-500 mb-4 italic">Questions 13–17: Complete the summary below by choosing the correct words from the box.</p>
+
+                <!-- Word Bank Reference Box -->
+                <div class="flex flex-wrap justify-center gap-2 mb-6 p-4 bg-amber-50 border border-amber-200 rounded-lg text-xs font-bold uppercase text-amber-950">
+                    <span class="word-bank-tag">connotation</span>
+                    <span class="word-bank-tag">publications</span>
+                    <span class="word-bank-tag">reliance</span>
+                    <span class="word-bank-tag">context</span>
+                    <span class="word-bank-tag">statistics</span>
+                    <span class="word-bank-tag">gestures</span>
+                    <span class="word-bank-tag">stereotypes</span>
+                </div>
+
+                <div class="leading-loose text-slate-800 bg-slate-50 p-6 md:p-8 border border-slate-200 rounded-xl shadow-inner text-sm md:text-base">
+                    When expanding into international markets, companies must carefully evaluate the cultural 
+                    <span class="inline-block mx-1">
+                        <strong>(13)</strong>
+                        <select name="q13" data-answer="context" data-desc="context (Para A: 'cultural context is essential')" class="border p-1.5 rounded bg-white text-blue-950 font-bold focus:ring-2 focus:ring-blue-400 outline-none">
+                            <option value="">-Select-</option>
+                            <option value="connotation">connotation</option>
+                            <option value="publications">publications</option>
+                            <option value="reliance">reliance</option>
+                            <option value="context">context</option>
+                            <option value="statistics">statistics</option>
+                            <option value="gestures">gestures</option>
+                            <option value="stereotypes">stereotypes</option>
+                        </select>
+                        <span id="feedback-q13"></span>
+                    </span>
+                    of their visual campaigns. Failure to understand symbolic meanings can lead to unintended emotional 
+                    <span class="inline-block mx-1">
+                        <strong>(14)</strong>
+                        <select name="q14" data-answer="connotation" data-desc="connotation (Para C: 'carries a strong connotation')" class="border p-1.5 rounded bg-white text-blue-950 font-bold focus:ring-2 focus:ring-blue-400 outline-none">
+                            <option value="">-Select-</option>
+                            <option value="connotation">connotation</option>
+                            <option value="publications">publications</option>
+                            <option value="reliance">reliance</option>
+                            <option value="context">context</option>
+                            <option value="statistics">statistics</option>
+                            <option value="gestures">gestures</option>
+                            <option value="stereotypes">stereotypes</option>
+                        </select>
+                        <span id="feedback-q14"></span>
+                    </span>, 
+                    such as misinterpreting traditional colors. International 
+                    <span class="inline-block mx-1">
+                        <strong>(15)</strong>
+                        <select name="q15" data-answer="publications" data-desc="publications (Para F: 'International publications must tailor their visual style')" class="border p-1.5 rounded bg-white text-blue-950 font-bold focus:ring-2 focus:ring-blue-400 outline-none">
+                            <option value="">-Select-</option>
+                            <option value="connotation">connotation</option>
+                            <option value="publications">publications</option>
+                            <option value="reliance">reliance</option>
+                            <option value="context">context</option>
+                            <option value="statistics">statistics</option>
+                            <option value="gestures">gestures</option>
+                            <option value="stereotypes">stereotypes</option>
+                        </select>
+                        <span id="feedback-q15"></span>
+                    </span> 
+                    often adjust visual layouts and cover designs to match local tastes. Furthermore, while Western advertising shows a strong 
+                    <span class="inline-block mx-1">
+                        <strong>(16)</strong>
+                        <select name="q16" data-answer="reliance" data-desc="reliance (Para H: 'heavy reliance on data-driven visual graphics')" class="border p-1.5 rounded bg-white text-blue-950 font-bold focus:ring-2 focus:ring-blue-400 outline-none">
+                            <option value="">-Select-</option>
+                            <option value="connotation">connotation</option>
+                            <option value="publications">publications</option>
+                            <option value="reliance">reliance</option>
+                            <option value="context">context</option>
+                            <option value="statistics">statistics</option>
+                            <option value="gestures">gestures</option>
+                            <option value="stereotypes">stereotypes</option>
+                        </select>
+                        <span id="feedback-q16"></span>
+                    </span> 
+                    on numerical 
+                    <span class="inline-block mx-1">
+                        <strong>(17)</strong>
+                        <select name="q17" data-answer="statistics" data-desc="statistics (Para H: 'numerical statistics to demonstrate product performance')" class="border p-1.5 rounded bg-white text-blue-950 font-bold focus:ring-2 focus:ring-blue-400 outline-none">
+                            <option value="">-Select-</option>
+                            <option value="connotation">connotation</option>
+                            <option value="publications">publications</option>
+                            <option value="reliance">reliance</option>
+                            <option value="context">context</option>
+                            <option value="statistics">statistics</option>
+                            <option value="gestures">gestures</option>
+                            <option value="stereotypes">stereotypes</option>
+                        </select>
+                        <span id="feedback-q17"></span>
+                    </span>, 
+                    consumers in other cultures may prioritize community feedback.
+                </div>
+            </section>
+
+            <!-- SECTION 4: Short Answer Questions (Q18-25) -->
+            <section>
+                <div class="flex items-center space-x-2 mb-4">
+                    <span class="bg-slate-800 text-white w-8 h-8 rounded-full flex items-center justify-center font-bold">4</span>
+                    <h3 class="text-lg font-bold text-slate-800 uppercase">Section D: Short Answer Questions</h3>
+                </div>
+                <p class="text-sm text-slate-500 mb-4 italic">Questions 18–25: Write <strong>NO MORE THAN TWO WORDS AND/OR A NUMBER</strong> from the passage for each answer.</p>
+
+                <div class="space-y-6">
+                    <div class="flex flex-col">
+                        <label class="text-sm font-semibold text-slate-800 mb-1">18. What is essential for companies to understand before launching a global campaign?</label>
+                        <div class="flex items-center">
+                            <input type="text" name="q18" data-answer="cultural context" data-alt="the cultural context,context" data-desc="Cultural context (Para A)" placeholder="Your answer..." class="border-b-2 border-slate-300 w-full max-w-lg outline-none focus:border-blue-500 py-1 font-semibold text-slate-900 transition-colors">
+                        </div>
+                        <div id="feedback-q18"></div>
+                    </div>
+
+                    <div class="flex flex-col">
+                        <label class="text-sm font-semibold text-slate-800 mb-1">19. What special associations does the color yellow have in Malaysia?</label>
+                        <div class="flex items-center">
+                            <input type="text" name="q19" data-answer="royal associations" data-alt="royal association,royalty" data-desc="Royal associations (Para B)" placeholder="Your answer..." class="border-b-2 border-slate-300 w-full max-w-lg outline-none focus:border-blue-500 py-1 font-semibold text-slate-900 transition-colors">
+                        </div>
+                        <div id="feedback-q19"></div>
+                    </div>
+
+                    <div class="flex flex-col">
+                        <label class="text-sm font-semibold text-slate-800 mb-1">20. Which color carries a strong connotation of formality and mourning in many Western nations?</label>
+                        <div class="flex items-center">
+                            <input type="text" name="q20" data-answer="black" data-alt="the color black" data-desc="Black (Para C)" placeholder="Your answer..." class="border-b-2 border-slate-300 w-full max-w-lg outline-none focus:border-blue-500 py-1 font-semibold text-slate-900 transition-colors">
+                        </div>
+                        <div id="feedback-q20"></div>
+                    </div>
+
+                    <div class="flex flex-col">
+                        <label class="text-sm font-semibold text-slate-800 mb-1">21. What features of local writing systems influence regional visual layout preferences?</label>
+                        <div class="flex items-center">
+                            <input type="text" name="q21" data-answer="structural features" data-alt="writing systems,the structural features" data-desc="Structural features / Writing systems (Para D)" placeholder="Your answer..." class="border-b-2 border-slate-300 w-full max-w-lg outline-none focus:border-blue-500 py-1 font-semibold text-slate-900 transition-colors">
+                        </div>
+                        <div id="feedback-q21"></div>
+                    </div>
+
+                    <div class="flex flex-col">
+                        <label class="text-sm font-semibold text-slate-800 mb-1">22. What challenge requires designers to reverse image panels for Arabic campaigns?</label>
+                        <div class="flex items-center">
+                            <input type="text" name="q22" data-answer="reading direction" data-alt="reading directions,right to left reading" data-desc="Reading direction (Para E)" placeholder="Your answer..." class="border-b-2 border-slate-300 w-full max-w-lg outline-none focus:border-blue-500 py-1 font-semibold text-slate-900 transition-colors">
+                        </div>
+                        <div id="feedback-q22"></div>
+                    </div>
+
+                    <div class="flex flex-col">
+                        <label class="text-sm font-semibold text-slate-800 mb-1">23. What should global brands avoid oversimplifying cultural styles into?</label>
+                        <div class="flex items-center">
+                            <input type="text" name="q23" data-answer="rigid stereotypes" data-alt="stereotypes" data-desc="Rigid stereotypes (Para G)" placeholder="Your answer..." class="border-b-2 border-slate-300 w-full max-w-lg outline-none focus:border-blue-500 py-1 font-semibold text-slate-900 transition-colors">
+                        </div>
+                        <div id="feedback-q23"></div>
+                    </div>
+
+                    <div class="flex flex-col">
+                        <label class="text-sm font-semibold text-slate-800 mb-1">24. What do advertisers use to show product performance and build consumer trust?</label>
+                        <div class="flex items-center">
+                            <input type="text" name="q24" data-answer="numerical statistics" data-alt="statistics,charts and graphs" data-desc="Numerical statistics (Para H)" placeholder="Your answer..." class="border-b-2 border-slate-300 w-full max-w-lg outline-none focus:border-blue-500 py-1 font-semibold text-slate-900 transition-colors">
+                        </div>
+                        <div id="feedback-q24"></div>
+                    </div>
+
+                    <div class="flex flex-col">
+                        <label class="text-sm font-semibold text-slate-800 mb-1">25. What do consumers in collectivist societies often prioritize over numbers?</label>
+                        <div class="flex items-center">
+                            <input type="text" name="q25" data-answer="community testimonials" data-alt="testimonials" data-desc="Community testimonials (Para H)" placeholder="Your answer..." class="border-b-2 border-slate-300 w-full max-w-lg outline-none focus:border-blue-500 py-1 font-semibold text-slate-900 transition-colors">
+                        </div>
+                        <div id="feedback-q25"></div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Submission Area -->
+            <div class="flex flex-col items-center py-10 border-t border-slate-200 space-y-4">
+                <div id="errorMsg" class="hidden-el text-red-600 font-bold bg-red-50 px-6 py-2.5 rounded-full border border-red-200 shadow-sm animate-pulse text-sm">
+                    Please answer all 25 questions before submitting.
+                </div>
+                
+                <div class="flex flex-wrap justify-center gap-4">
+                    <button type="button" id="submitBtn" class="bg-slate-800 hover:bg-slate-900 text-white font-bold py-4 px-14 rounded-full shadow-lg transition-all active:scale-95 uppercase tracking-widest text-sm md:text-base">
+                        Submit Assessment
+                    </button>
+                    <button type="button" id="printBtn" onclick="window.print()" class="hidden-el bg-blue-800 hover:bg-blue-900 text-white font-bold py-4 px-10 rounded-full shadow-lg transition-all uppercase tracking-widest text-sm md:text-base">
+                        Print / Save PDF
+                    </button>
+                </div>
+
+                <!-- Bottom Result Card (Complementing the Top Banner) -->
+                <div id="resultBox" class="hidden-el mt-8 text-center bg-slate-50 border-2 border-slate-800 p-8 rounded-2xl w-full max-w-md shadow-2xl transition-all">
+                    <h5 class="text-lg font-bold text-slate-900 uppercase tracking-wider mb-2">Final Evaluation</h5>
+                    <div id="finalScore" class="text-6xl font-black text-slate-800 my-3 tracking-tighter">0 / 25</div>
+                    <div id="finalGrade" class="text-lg font-bold text-slate-600 uppercase">Grade: 0%</div>
+                    <div id="performanceBand" class="mt-2 text-xs font-bold text-blue-900 uppercase tracking-widest bg-blue-100 py-1 px-3 rounded-full inline-block">Proficiency: --</div>
+                    <p class="text-slate-500 mt-6 text-xs italic">Worksheet is locked. Your final result has been recorded.</p>
+                </div>
+            </div>
+        </form>
+
+        <footer class="bg-slate-50 p-6 text-center text-[10px] text-slate-400 font-bold uppercase tracking-[0.3em] border-t border-slate-100">
+            Preparatory Studies Center • GE3 Reading Assessment System
+        </footer>
+    </div>
+
+    <script>
+        // OFFICIAL ANSWER KEY (Q1 - Q25)
+        const answerKey = {
+            1: { target: "3" },
+            2: { target: "1" },
+            3: { target: "4" },
+            4: { target: "2" },
+            5: { target: "F" },
+            6: { target: "T" },
+            7: { target: "T" },
+            8: { target: "F" },
+            9: { target: "NG" },
+            10: { target: "F" },
+            11: { target: "T" },
+            12: { target: "F" },
+            13: { target: "context" },
+            14: { target: "connotation" },
+            15: { target: "publications" },
+            16: { target: "reliance" },
+            17: { target: "statistics" },
+            18: { target: "cultural context", alts: ["the cultural context", "context"] },
+            19: { target: "royal associations", alts: ["royal association", "royalty"] },
+            20: { target: "black", alts: ["the color black"] },
+            21: { target: "writing systems", alts: ["structural features", "local writing systems", "features of local writing systems"] },
+            22: { target: "reading direction", alts: ["reading directions", "right to left reading"] },
+            23: { target: "rigid stereotypes", alts: ["stereotypes"] },
+            24: { target: "numerical statistics", alts: ["statistics"] },
+            25: { target: "community testimonials", alts: ["testimonials"] }
+        };
+
+        const quizForm = document.getElementById('quizForm');
+        const submitBtn = document.getElementById('submitBtn');
+        const printBtn = document.getElementById('printBtn');
+        const resultBox = document.getElementById('resultBox');
+        const finalScoreText = document.getElementById('finalScore');
+        const finalGradeText = document.getElementById('finalGrade');
+        const performanceBand = document.getElementById('performanceBand');
+        const liveScore = document.getElementById('liveScore');
+        const errorMsg = document.getElementById('errorMsg');
+        const topScoreBanner = document.getElementById('topScoreBanner');
+        const topScoreText = document.getElementById('topScoreText');
+        const topGradeText = document.getElementById('topGradeText');
+        const topScoreTitle = document.getElementById('topScoreTitle');
+        const topScoreDetail = document.getElementById('topScoreDetail');
+
+        function cleanString(str) {
+            if (!str) return "";
+            return str.toLowerCase().trim().replace(/[.,\/#!$%\^&\*;:{}=\-_`~()]/g, "").replace(/\s{2,}/g, " ");
+        }
+
+        // Real-time listener to remove red unanswered alerts as the student types/selects
+        quizForm.querySelectorAll('input[name^="q"], select[name^="q"]').forEach(el => {
+            el.addEventListener('change', () => el.classList.remove('unanswered'));
+            el.addEventListener('input', () => el.classList.remove('unanswered'));
+        });
+
+        submitBtn.addEventListener('click', () => {
+            const inputs = quizForm.querySelectorAll('input[name^="q"], select[name^="q"]');
+            let answered = 0;
+            let score = 0;
+            const total = 25;
+            let missingQuestions = [];
+
+            // Reset unanswered styles
+            inputs.forEach(i => i.classList.remove('unanswered'));
+
+            // Check if all 25 questions are filled
+            inputs.forEach(input => {
+                const val = input.value.trim();
+                if (val !== "") {
+                    answered++;
+                } else {
+                    input.classList.add('unanswered');
+                    const qNumber = input.name.replace('q', '');
+                    missingQuestions.push(qNumber);
+                }
+            });
+
+            // Block submission if any question is missing
+            if (answered < total) {
+                errorMsg.classList.remove('hidden-el');
+                errorMsg.innerText = `Please answer all questions before submitting. (${total - answered} remaining: Q${missingQuestions.slice(0, 6).join(', ')}${missingQuestions.length > 6 ? '...' : ''})`;
+                errorMsg.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                return;
+            }
+
+            if (!confirm("Are you sure you want to submit? This assessment allows one-time submission only.")) {
+                return;
+            }
+
+            errorMsg.classList.add('hidden-el');
+
+            // Grade silently without revealing answers or ticks/crosses
+            for (let i = 1; i <= total; i++) {
+                const input = quizForm.querySelector(`[name="q${i}"]`);
+                if (!input) continue;
+
+                const studentVal = cleanString(input.value);
+                const item = answerKey[i];
+                const targetClean = cleanString(item.target);
+                const alts = item.alts ? item.alts.map(cleanString) : [];
+
+                let isCorrect = (studentVal === targetClean) || alts.includes(studentVal);
+
+                // Section A: Headings (accept numeric digits)
+                if (!isCorrect && i <= 4) {
+                    const numOnly = studentVal.replace(/\D/g, "");
+                    if (numOnly === targetClean) isCorrect = true;
+                }
+
+                // Section B: True/False/Not Given flexibility
+                if (!isCorrect && i >= 5 && i <= 12) {
+                    if (targetClean === 't' && (studentVal === 't' || studentVal === 'true')) isCorrect = true;
+                    if (targetClean === 'f' && (studentVal === 'f' || studentVal === 'false')) isCorrect = true;
+                    if (targetClean === 'ng' && (studentVal === 'ng' || studentVal === 'not given')) isCorrect = true;
+                }
+
+                if (isCorrect) score++;
+
+                // Clear any individual feedback divs to keep answers hidden
+                const feedbackDiv = document.getElementById(`feedback-q${i}`);
+                if (feedbackDiv) feedbackDiv.innerHTML = '';
+
+                // Lock input to enforce one-time submission
+                input.disabled = true;
+            }
+
+            // Calculate percentage and proficiency band
+            const percentage = Math.round((score / total) * 100);
+            let proficiency = "Needs Revision (Band 4.5–5.5)";
+            if (score >= 22) proficiency = "Outstanding (Band 8.0–9.0)";
+            else if (score >= 18) proficiency = "Good (Band 7.0–7.5)";
+            else if (score >= 14) proficiency = "Competent (Band 6.0–6.5)";
+
+            // Update bottom card results
+            finalScoreText.innerText = `${score} / ${total}`;
+            finalGradeText.innerText = `Grade: ${percentage}%`;
+            performanceBand.innerText = `Proficiency: ${proficiency}`;
+            liveScore.innerText = `SCORE: ${score} / ${total}`;
+
+            // Reveal top banner & score circle
+            topScoreBanner.style.display = 'flex';
+            topScoreText.innerText = `${score}/${total}`;
+            topGradeText.innerText = `${percentage}%`;
+            topScoreTitle.innerText = `Final Score: ${score} / ${total} (${percentage}%)`;
+            topScoreDetail.innerText = `Overall Performance: ${proficiency}. Your responses have been submitted and locked.`;
+
+            // Lock controls and reveal PDF print button
+            resultBox.classList.remove('hidden-el');
+            submitBtn.classList.add('hidden-el');
+            printBtn.classList.remove('hidden-el');
+
+            document.getElementById('studentName').disabled = true;
+            document.getElementById('studentGroup').disabled = true;
+
+            // Scroll immediately to the top prominent banner
+            window.scrollTo({ top: 0, left: 0, behavior: 'smooth' });
+            document.documentElement.scrollTop = 0;
+            document.body.scrollTop = 0;
+        });
+    </script>
+</body>
+</html>
